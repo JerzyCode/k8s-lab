@@ -1,8 +1,7 @@
 # ============================================================================
 # MIGRATION-JOB.YAML — sample-alembic-app
 # ============================================================================
-# To jest DOKŁADNIE ten mechanizm, o którym cała ta rozmowa się kręciła
-# od samego początku: Job wykonujący się RAZ, PRZED Deploymentem appki,
+# Job wykonujący się RAZ, PRZED Deploymentem appki,
 # niezależnie ile replik ma docelowo mieć Deployment.
 #
 # annotations:
