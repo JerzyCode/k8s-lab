@@ -148,6 +148,7 @@ Następnie dostęp do aplikacji jest pod adresem: `http://localhost:3000/`
 Podgląd logów:
 
 ```bash
+```bash
 kubectl logs -n lab -l app=openwebui -f
 ```
 
@@ -158,3 +159,11 @@ Zaczynamy od dodania aplikacj postgres - katalog apps/postgres.
 ```bash
 kubectl apply -f apps/postgres/application.yaml
 ```
+
+Ponownie forward żeby się dobić do tej bazy np. przez DBeaver: `kubectl port-forward -n lab svc/postgres 5432:5432`.
+
+Można zauważyć, że tabele są puste:
+
+![alt text](docs/empty-tables.png)
+
+W sample-alembic-app znajduje się gotowa aplikacja z migracjami do testowania.
