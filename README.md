@@ -126,3 +126,13 @@ Następnie po kliknięciu sync w detalach aplikacji jest:
 ![alt text](docs/hello-world-details.png)
 
 W ramach testów polecam zmienić w pliku liczbę replicas i kliknąć sync.
+
+Aby usuąć aplikację komenda: `kubectl delete -f apps/hello-world/application.yaml` lub przez GUI.
+
+## OpenwebUI on k8s
+
+Kroki:
+
+```bash
+kubectl apply -f apps/openwebui/application.yaml
+```
