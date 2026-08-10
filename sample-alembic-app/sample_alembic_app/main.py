@@ -11,11 +11,12 @@
 # Migracje ma wykonywać osobny Job (PreSync hook w Argo), appka
 # tylko zakłada że schema JUŻ istnieje, gdy startuje.
 # ============================================================================
-from app.db import get_db
-from app.models import Item
 from fastapi import Depends, FastAPI
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+
+from sample_alembic_app.db import get_db
+from sample_alembic_app.models import Item
 
 app = FastAPI(title="alembic-lab-app")
 

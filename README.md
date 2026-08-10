@@ -184,3 +184,9 @@ minikube image load sample-alembic-app:v1
 ```bash
 minikube image ls | grep sample-alembic-app
 ```
+
+Na tym etapie po dodaniu odpowiednich plików do apps/sample-alembic-app aplikacja powinna się wczytać  do argocd, ale nie powinna się poprawnie uruchamić bo nie ma jeszcze joba z migracją alembica.
+
+```bash
+kubectl apply -f apps/sample-alembic-app/application.yaml
+```
