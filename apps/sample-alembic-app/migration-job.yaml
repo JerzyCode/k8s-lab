@@ -41,7 +41,7 @@ spec:
         - name: migrate
           image: sample-alembic-app:v2    # ten sam obraz co Deployment appki 
           imagePullPolicy: Never             # tak samo jak w Deploymencie — obraz lokalny z minikube
-          command: ["alembic", "upgrade", "head"]
+          command: ["python", "-m", "alembic", "upgrade", "head"]
           env:
             - name: DATABASE_URL
               value: postgresql://labuser:labpassword@postgres:5432/labdb
