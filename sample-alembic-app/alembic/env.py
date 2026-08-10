@@ -19,6 +19,7 @@ from logging.config import fileConfig
 from alembic import context
 from sample_alembic_app.db import Base
 from sample_alembic_app.models import (
+    Category,  # noqa: F401
     Item,  # noqa: F401 — import wymagany, żeby model zarejestrował się w Base.metadata
 )
 from sqlalchemy import engine_from_config, pool
