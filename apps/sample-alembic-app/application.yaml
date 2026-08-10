@@ -1,0 +1,23 @@
+# ============================================================================
+# APPLICATION.YAML — sample-alembic-app
+# ============================================================================
+# Ten sam wzorzec co przy postgres/hello-world — wskazuje Argo, gdzie
+# szukać manifestów tej konkretnej aplikacji.
+# ============================================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sample-alembic-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/JerzyCode/k8s-lab
+    targetRevision: main
+    path: apps/sample-alembic-app
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: lab
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

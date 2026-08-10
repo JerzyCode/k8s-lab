@@ -1,0 +1,17 @@
+# ============================================================================
+# SERVICE.YAML — sample-alembic-app
+# ============================================================================
+# Stały adres sieciowy dla appki wewnątrz klastra (i wygodny, stały cel
+# do port-forward, zamiast szukać za każdym razem losowej nazwy poda).
+# ============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-alembic-app
+  namespace: lab
+spec:
+  selector:
+    app: sample-alembic-app
+  ports:
+    - port: 8000
+      targetPort: 8000

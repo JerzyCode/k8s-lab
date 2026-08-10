@@ -1,0 +1,41 @@
+# ============================================================================
+# DEPLOYMENT.YAML — sample-alembic-app
+# ============================================================================
+# imagePullPolicy: Never — KLUCZOWE przy lokalnym obrazie wgranym przez
+# `minikube image load`. Bez tego K8s próbowałby ściągnąć obraz z Docker
+# Huba (bo domyślny imagePullPolicy dla obrazu z tagiem to "IfNotPresent",
+# a przy braku lokalnie i tak próbowałby pobrać) — Twój obraz tam nie
+# istnieje, dostałbyś ImagePullBackOff. "Never" mówi: użyj TYLKO tego
+# co jest już lokalnie w klastrze, nigdy nie próbuj ściągać z zewnątrz.
+#
+# DATABASE_URL wskazuje na Postgresa przez nazwę Service ("postgres") —
+# działa dzięki wewnętrznemu DNS K8s, bo oba są w tym samym namespace "lab".
+#
+# CELOWO BRAK migracji w tym Deploymencie — appka zakłada że schema
+# JUŻ istnieje. Za chwilę dodamy osobny Job (PreSync), który to zapewni
+# PRZED wystartowaniem tego Deploymentu.
+# ============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-alembic-app
+  namespace: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-alembic-app
+  template:
+    metadata:
+      labels:
+        app: sample-alembic-app
+    spec:
+      containers:
+        - name: sample-alembic-app
+          image: sample-alembic-app:v1
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: postgresql://labuser:labpassword@postgres:5432/labdb
