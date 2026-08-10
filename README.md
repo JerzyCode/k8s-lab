@@ -194,3 +194,7 @@ kubectl apply -f apps/sample-alembic-app/application.yaml
 Po zrobieniu forward'u mamy dostępną apkę w localhost:8000. Natomiast endpoint /items nie działa ponieważ nie ma tabeli w bd.
 
 ![alt text](docs/error-items.png)
+
+Po dodaniu `migration-job.yaml` alembic został wywołwany i aplikacja wstała i działa /items.
+
+![alt text](docs/alembic_updated.png)
