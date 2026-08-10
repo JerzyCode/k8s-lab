@@ -46,3 +46,5 @@ spec:
           env:
             - name: DATABASE_URL
               value: postgresql://labuser:labpassword@postgres:5432/labdb
+            - name: PYTHONPATH
+              value: /code
