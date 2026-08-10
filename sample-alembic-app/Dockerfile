@@ -21,10 +21,10 @@ COPY pyproject.toml ./
 RUN uv sync --no-dev
 
 # Reszta kodu — ta warstwa zmienia się często, więc jest na końcu
-COPY app ./app
+COPY sample_alembic_app ./sample_alembic_app
 COPY alembic ./alembic
 COPY alembic.ini ./
 
 # Domyślna komenda: odpala serwer appki. Job w K8s nadpisze to komendą
 # `alembic upgrade head` (patrz: migration-job.yaml, który zrobimy dalej)
-CMD ["uv", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uv", "run", "uvicorn", "sample_alembic_app.main:app", "--host", "0.0.0.0", "--port", "8000"]

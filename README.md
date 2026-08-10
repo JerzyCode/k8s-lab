@@ -166,4 +166,21 @@ Można zauważyć, że tabele są puste:
 
 ![alt text](docs/empty-tables.png)
 
-W sample-alembic-app znajduje się gotowa aplikacja z migracjami do testowania.
+W sample-alembic-app znajduje się gotowa aplikacja z migracjami do testowania. Wystarczy zbudować kontener i go wrzucić na k8s.
+
+**Budowanie obrazu:**
+
+```bash
+cd sample-alembic-app
+docker build -t sample-alembic-app:v1 .
+```
+
+**Wrzucenie obrazu na k8s**
+```bash
+minikube image load sample-alembic-app:v1
+```
+
+**Potwierdzenie wgrania**
+```bash
+minikube image ls | grep sample-alembic-app
+```
