@@ -1,0 +1,25 @@
+# ============================================================================
+# APPLICATION.YAML — Postgres
+# ============================================================================
+# Ten sam wzorzec co przy hello-world/openwebui — mówi Argo "pilnuj tego
+# katalogu w repo i utrzymuj zsynchronizowany z klastrem". Jedyna różnica
+# względem innych application.yaml w tym repo to `path` wskazujący na
+# apps/postgres, żeby Argo wiedziało którego zestawu plików pilnować.
+# ============================================================================
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/JerzyCode/k8s-lab
+    targetRevision: main
+    path: apps/postgres
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: lab
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

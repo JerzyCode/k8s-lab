@@ -1,0 +1,37 @@
+# ============================================================================
+# DEPLOYMENT.YAML — Postgres
+# ============================================================================
+# Sam Postgres jako pojedynczy pod w klastrze. To NIE jest produkcyjny
+# sposób stawiania bazy (brak PersistentVolume = dane znikają przy restarcie
+# poda; w realnym środowisku użyłbyś StatefulSet + PersistentVolumeClaim) —
+# tu celowo najprościej jak się da, żeby mieć bazę do testowania migracji.
+#
+# `envFrom.secretRef` wciąga WSZYSTKIE klucze z Secret jako zmienne
+# środowiskowe kontenera — więc obraz postgres:16 dostaje POSTGRES_USER,
+# POSTGRES_PASSWORD, POSTGRES_DB bez ręcznego wypisywania każdej z osobna.
+# ============================================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: lab
+spec:
+  replicas: 1                 # Postgres NIE skaluje się przez zwiększenie replicas —
+                               # to osobny, dużo bardziej złożony temat (replikacja bazy),
+                               # zostajemy przy jednej instancji
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16          # oficjalny obraz z Docker Huba, konkretna wersja
+          ports:
+            - containerPort: 5432      # domyślny port Postgresa
+          envFrom:
+            - secretRef:
+                name: postgres-credentials   # nazwa musi się zgadzać z metadata.name w secret.yaml

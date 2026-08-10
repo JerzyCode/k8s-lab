@@ -1,0 +1,28 @@
+# ============================================================================
+# SERVICE.YAML — Postgres
+# ============================================================================
+# Service to "stały adres sieciowy" dla poda/podów pasujących do selektora.
+# Bez tego, inne pody (Twoja appka) nie miałyby jak w niezawodny sposób
+# znaleźć Postgresa — adresy IP podów zmieniają się przy restarcie,
+# a Service daje stałą nazwę DNS niezależną od tego które konkretnie IP
+# ma pod w danym momencie.
+#
+# Kubernetes automatycznie tworzy wpis DNS w formacie:
+#   <nazwa-service>.<namespace>.svc.cluster.local
+# W obrębie tego samego namespace wystarczy sama nazwa: "postgres".
+# Czyli appka w namespace "lab" połączy się przez host "postgres", port 5432.
+#
+# `selector.app: postgres` musi się zgadzać z labelką w deployment.yaml —
+# to jest mechanizm, którym Service "wie" do którego poda kierować ruch.
+# ============================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: lab
+spec:
+  selector:
+    app: postgres        # kieruje ruch do podów z tą etykietą (patrz: deployment.yaml template.metadata.labels)
+  ports:
+    - port: 5432          # port, na którym Service nasłuchuje (od strony klientów, np. Twojej appki)
+      targetPort: 5432    # port, na który przekierowuje ruch wewnątrz poda (musi się zgadzać z containerPort)

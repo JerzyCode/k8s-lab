@@ -136,3 +136,25 @@ Kroki:
 ```bash
 kubectl apply -f apps/openwebui/application.yaml
 ```
+a nas†ępnie podobnie jak w aplikacji `hello-world` - klikamy Sync.
+
+Ponownie aby dobić się do aplikacji trzeba zrobić port-forward:
+
+```bash
+kubectl port-forward -n lab deployment/openwebui 3000:8080
+```
+Następnie dostęp do aplikacji jest pod adresem: `http://localhost:3000/`
+
+Podgląd logów:
+
+```bash
+kubectl logs -n lab -l app=openwebui -f
+```
+
+## Alembic init job before deploy replicas
+
+Zaczynamy od dodania aplikacj postgres - katalog apps/postgres.
+
+```bash
+kubectl apply -f apps/postgres/application.yaml
+```
