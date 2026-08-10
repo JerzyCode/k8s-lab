@@ -1,0 +1,40 @@
+# ============================================================================
+# APPLICATION.YAML
+# ============================================================================
+# Ten plik NIE jest zwykłym manifestem Kubernetesa — to manifest zrozumiały
+# tylko dla ArgoCD (typ "Application" dorzuca do klastra sam Argo przy
+# instalacji). Kubernetes sam z siebie nie wie co z nim zrobić.
+#
+# Jego jedyna rola: powiedzieć Argo "pilnuj TEGO katalogu w TYM repo Git,
+# i utrzymuj jego zawartość zsynchronizowaną z TYM miejscem w klastrze".
+#
+# To NIE opisuje samej aplikacji (nie ma tu obrazu, portów, replik) —
+# to jest czysto "wskaźnik/subskrypcja" na właściwe manifesty, które leżą
+# gdzie indziej w tym samym katalogu repo (np. w deployment.yaml).
+#
+# Ten plik aplikujesz RĘCZNIE, JEDNORAZOWO (`kubectl apply -f application.yaml`)
+# — to jest ten jeden "punkt zaczepienia", od którego Argo przejmuje kontrolę
+# nad resztą plików w danym katalogu i pilnuje ich automatycznie.
+# ============================================================================
+
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgres              # nazwa tej Application w Argo (widoczna w UI)
+  namespace: argocd           # gdzie żyje sam obiekt Application (zawsze argocd)
+spec:
+  project: default
+
+  source:                                                     # ← SKĄD
+    repoURL: https://github.com/JerzyCode/k8s-lab                # które repo
+    targetRevision: main                                      # która gałąź/tag
+    path: apps/postgres                                       # który katalog w tym repo
+
+  destination:                                                # ← DOKĄD
+    server: https://kubernetes.default.svc                    # do jakiego klastra (tu: ten sam, w którym siedzi Argo)
+    namespace: lab                                             # do jakiego namespace w tym klastrze
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true      # czy Argo ma sam założyć namespace jeśli nie istnieje

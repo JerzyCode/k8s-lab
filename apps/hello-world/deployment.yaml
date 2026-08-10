@@ -1,0 +1,39 @@
+# ============================================================================
+# DEPLOYMENT.YAML
+# ============================================================================
+# Ten plik to CZYSTY manifest Kubernetesa — nie wie nic o istnieniu Argo.
+# Gdybyś chciał, mógłbyś go zaaplikować ręcznie (`kubectl apply -f deployment.yaml`)
+# bez Argo w ogóle i zadziała identycznie.
+#
+# To jest opis TREŚCI: "chcę mieć taki a taki pod, z takim obrazem,
+# tyle replik, cały czas żywy". Argo tylko pilnuje żeby ten opis
+# faktycznie odzwierciedlał to co jest w klastrze (a jeśli ktoś ręcznie
+# coś zmieni w klastrze, Argo — jeśli ma włączony selfHeal — przywróci
+# stan zgodny z tym plikiem).
+#
+# Deployment != Pod. Deployment to "przepis + pilnowanie" — sam tworzy
+# i zarządza podami na podstawie sekcji `template` poniżej, restartuje
+# je jeśli padną, pilnuje żeby zawsze było dokładnie `replicas` sztuk.
+# ============================================================================
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  namespace: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27
+          ports:
+            - containerPort: 80
