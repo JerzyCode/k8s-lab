@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: sample-alembic-app
-          image: sample-alembic-app:v2
+          image: sample-alembic-app:v3
           imagePullPolicy: Never
           ports:
             - containerPort: 8000

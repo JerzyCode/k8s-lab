@@ -39,7 +39,7 @@ spec:
       restartPolicy: Never      # Job nie restartuje kontenera w tym samym podzie przy błędzie — tworzy nowy pod (do backoffLimit)
       containers:
         - name: migrate
-          image: sample-alembic-app:v2    # ten sam obraz co Deployment appki 
+          image: sample-alembic-app:v3    # ten sam obraz co Deployment appki 
           workingDir: /code          
           imagePullPolicy: Never             # tak samo jak w Deploymencie — obraz lokalny z minikube
           command: ["uv", "run", "alembic", "upgrade", "head"]
