@@ -1,0 +1,47 @@
+# ============================================================================
+# MIGRATION-JOB.YAML — sample-alembic-app
+# ============================================================================
+# To jest DOKŁADNIE ten mechanizm, o którym cała ta rozmowa się kręciła
+# od samego początku: Job wykonujący się RAZ, PRZED Deploymentem appki,
+# niezależnie ile replik ma docelowo mieć Deployment.
+#
+# annotations:
+#   argocd.argoproj.io/hook: PreSync
+#     → mówi Argo: "wykonaj ten Job PRZED synchronizacją reszty zasobów
+#       w tym katalogu (Deployment, Service), i CZEKAJ aż się zakończy
+#       sukcesem, zanim przejdziesz dalej"
+#
+#   argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+#     → przy KOLEJNYM sync (np. po zmianie kodu appki), Argo usunie
+#       POPRZEDNI Job zanim stworzy nowy — inaczej dostałbyś błąd
+#       "job already exists" (K8s nie pozwala nadpisać ukończonego Joba
+#       tą samą nazwą)
+#
+# image: TEN SAM obraz co Deployment appki — bo migracje żyją w tym
+# samym repo/obrazie co kod, muszą zawsze być spójne z wersją appki.
+#
+# command nadpisuje domyślny CMD z Dockerfile (który uruchamia uvicorn)
+# na "alembic upgrade head" — to jest jedyna faktyczna różnica względem
+# Deploymentu appki, poza restartPolicy.
+# ============================================================================
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: sample-alembic-app-migrate
+  namespace: lab
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 2              # ile razy K8s spróbuje ponownie, jeśli Job się nie powiedzie
+  template:
+    spec:
+      restartPolicy: Never      # Job nie restartuje kontenera w tym samym podzie przy błędzie — tworzy nowy pod (do backoffLimit)
+      containers:
+        - name: migrate
+          image: sample-alembic-app:v2    # ten sam obraz co Deployment appki 
+          imagePullPolicy: Never             # tak samo jak w Deploymencie — obraz lokalny z minikube
+          command: ["alembic", "upgrade", "head"]
+          env:
+            - name: DATABASE_URL
+              value: postgresql://labuser:labpassword@postgres:5432/labdb
