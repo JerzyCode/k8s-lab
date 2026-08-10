@@ -40,6 +40,7 @@ spec:
       containers:
         - name: migrate
           image: sample-alembic-app:v2    # ten sam obraz co Deployment appki 
+          workingDir: /code          
           imagePullPolicy: Never             # tak samo jak w Deploymencie — obraz lokalny z minikube
           command: ["uv", "run", "alembic", "upgrade", "head"]
           env:
