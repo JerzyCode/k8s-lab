@@ -120,3 +120,9 @@ kubectl apply -f apps/hello-world/application.yaml
 
 W gui powinno być widoczne:
 ![alt text](docs/added-hello-world.png)
+
+Następnie po kliknięciu sync w detalach aplikacji jest:
+
+![alt text](docs/hello-world-details.png)
+
+W ramach testów polecam zmienić w pliku liczbę replicas i kliknąć sync.
