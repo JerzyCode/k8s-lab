@@ -110,3 +110,13 @@ Najprostszy deploy z argo aplikacji typu `hello-world`. Warto zaznajomić się z
 **Dodanie do argo tokenu do gita**
 
 Jeśli repozytorium jest prywatne należy wejść w settings i zestawić połaczenie z gitlabem. Np. wygenerować token na potrzeby laba i go dodać.
+
+Należy teraz zaaplikować ten plik, żeby był widoczny w argo. Można to zrobić przy pomocy cli lub przez gui.
+
+W katalogu z projektem:
+```bash
+kubectl apply -f apps/hello-world/application.yaml
+```
+
+W gui powinno być widoczne:
+![alt text](docs/added-hello-world.png)

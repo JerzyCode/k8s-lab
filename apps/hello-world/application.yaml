@@ -21,7 +21,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: postgres              # nazwa tej Application w Argo (widoczna w UI)
+  name: hello-world              # nazwa tej Application w Argo (widoczna w UI)
   namespace: argocd           # gdzie żyje sam obiekt Application (zawsze argocd)
 spec:
   project: default
@@ -29,7 +29,7 @@ spec:
   source:                                                     # ← SKĄD
     repoURL: https://github.com/JerzyCode/k8s-lab                # które repo
     targetRevision: main                                      # która gałąź/tag
-    path: apps/postgres                                       # który katalog w tym repo
+    path: apps/hello-world                                       # który katalog w tym repo
 
   destination:                                                # ← DOKĄD
     server: https://kubernetes.default.svc                    # do jakiego klastra (tu: ten sam, w którym siedzi Argo)
